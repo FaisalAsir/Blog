@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 
 @RestController
@@ -18,19 +19,19 @@ public class BlogPostController {
     private BlogPostService blogPostService;
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public BlogPost createBlogPost(@RequestBody BlogPost blogPost) {
+    public BlogPost createBlogPost(@Valid @RequestBody BlogPost blogPost) {
         return blogPostService.save(blogPost);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BlogPost updateBlogPost(@PathVariable String id, @RequestBody BlogPost blogPost) {
+    public BlogPost updateBlogPost(@PathVariable String id, @Valid @RequestBody BlogPost blogPost) {
         return blogPostService.update(id,blogPost);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateBlogPost(@PathVariable String id) {
+    public void deleteBlogPost(@PathVariable String id) {
         blogPostService.delete(id);
     }
 
