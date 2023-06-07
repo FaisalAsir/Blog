@@ -3,7 +3,6 @@ package com.blog.controller;
 import com.blog.entity.BlogPost;
 import com.blog.service.BlogPostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/blogpost")
@@ -43,11 +43,11 @@ public class BlogPostController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<BlogPost> getAllBlogPost(@RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "10") int size,
-                                  @RequestParam(defaultValue = "id,title") String[] sort){
+    public List<BlogPost> getAllBlogPost(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size,
+                                         @RequestParam(defaultValue = "id,title") String[] sort){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(parseSortExpressions(sort)));
-        return blogPostService.findAll(pageRequest);
+        return blogPostService.findAll(pageRequest).getContent();
     }
 
     private Sort.Order[] parseSortExpressions(String[] sort) {
